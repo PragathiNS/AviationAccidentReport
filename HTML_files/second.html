@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  	<title>Aviation Accident report</title> 
+
+	<style>
+	a:link {
+    color: green;
+    background-color: transparent;
+    text-decoration: none;
+	}
+	a:visited {
+    color:#000080;
+    background-color: transparent;
+    text-decoration: none;
+	}
+	a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+	}
+	a:active {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: underline;
+	}
+	</style>
+	
+	<!--   import Google visualization  API -->
+
+	<script type="text/javascript"
+          src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['table']}]}"></script>
+    <script type="text/javascript" 
+	src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
+		  <script type="text/javascript"
+          src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['line']}]}"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	
+    <script type="text/javascript">
+	var queryUrl1 ="http://localhost:3030/project?query=SELECT%20distinct%20?year%20?major%20?serious%20?damage%20?injury%20?accidents_fatal%20?hull_losses%20WHERE%20{%20GRAPH%20%3Chttp://localhost:3030/project/data/data67%3E{%20?s1%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/year%3E%20?year;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/major%3E%20?major;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/serious%3E%20?serious;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/damage%3E%20?damage;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/injury%3E%20?injury.%20}%20GRAPH%20%3Chttp://localhost:3030/project/data/data69%3E{%20?s3%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/year%3E%20?year;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/hull_losses%3E%20?hull_losses;%20}%20GRAPH%20%3Chttp://localhost:3030/project/data/data70%3E{%20?s4%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/year%3E%20?year;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/accidents_fatal%3E%20?accidents_fatal;%20}%20}%20order%20by%20desc%20(?year)%20limit%2010";
+	
+	$.ajax({
+	 dataType: "jsonp",
+	 url:queryUrl1,	    
+	success: function(chartData) {
+		
+		drawChart(chartData);
+	}
+	  });
+	  
+	 function drawChart(chartData) {
+		var pieData = new google.visualization.DataTable();
+		pieData.addColumn('string', 'Accident');
+     	pieData.addColumn('number', 'Causes');
+        var bindings = chartData.results.bindings; 
+        var TotalHL=0;
+        var TotalFatalities=0;
+        var TotalInjury=0;
+        var TotalMiscelleanous=0;
+		var TotalDamage=0;
+		var TotalAccident=0;
+	    for (var i in bindings) {
+           var airCraftData = chartData.results.bindings[i];
+		   var year = airCraftData.year.value;
+		   var major = parseInt(airCraftData.major.value);
+		   var damage = parseInt(airCraftData.damage.value);
+	       var serious = parseInt(airCraftData.serious.value);
+	       var injury = parseInt(airCraftData.injury.value);
+		   var hull_losses = parseInt(airCraftData.hull_losses.value);
+		   var accidents_fatal = parseInt(airCraftData.accidents_fatal.value);
+	       TotalHL +=hull_losses;
+	       TotalDamage +=damage;
+	       TotalFatalities +=accidents_fatal;
+		   TotalAccident+=(major+damage+serious+injury);
+		   var actual_injury = (major+serious+injury-hull_losses-accidents_fatal);
+		   var of =0;
+		   if (actual_injury>0){
+			TotalInjury+=actual_injury;
+			of=actual_injury;
+		   }
+		   //console.log(major, damage, serious, injury);
+		   //console.log(TotalAccident, hull_losses, accidents_fatal, actual_injury,damage );
+		   var rem = (major+serious+injury-hull_losses-accidents_fatal-actual_injury);
+		   var misc =0;
+		   if (rem>0){
+			TotalMiscelleanous+=rem
+			misc = rem;
+		   }
+	       console.log(TotalAccident, TotalHL, TotalDamage, TotalFatalities, TotalInjury, TotalMiscelleanous);
+	       //alert(TotalAccident+TotalHL+TotalDamage+TotalFatalities+TotalInjury+TotalMiscelleanous);
+}		
+	pieData.addRows([
+	['Hull Losses',TotalHL],
+	['Aircraft Damage',TotalDamage],
+	['Accident Fatalities',TotalFatalities],
+	['Accident Injury',TotalInjury],
+	['Miscelleneous',TotalMiscelleanous]]);
+	var options = {
+	//title:'Classification of all the Accidents and Total Fatalities from 2000-2009',
+	is3D: true,
+	};
+	
+	var chart=new google.visualization.PieChart(document.getElementById('pie_canvas'));
+	chart.draw(pieData,options);
+}
+
+	</script>
+ </head>
+ <body>
+	<h1 style="text-align:center; background-color:white; color:red; padding:5px;">AVIATION ACCIDENT REPORT FROM 2000 - 2009</h1>
+	
+	<h3>Classification of Effects of Aviation Accidents</h3>
+  
+	<div id="pie_canvas" style="width: 900px; height: 500px;"></div>
+  
+	<a href="file:///C:/Users/Pragathi/OneDrive/Documents/SW/Proect/trial/AviationAccidents.html"> <b><center>HOME</center></b></a>
+ </body>
+</html>

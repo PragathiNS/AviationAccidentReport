@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  	<title>Aviation Accident report</title> 
+
+	<style>
+	a:link {
+    color: green;
+    background-color: transparent;
+    text-decoration: none;
+	}
+	a:visited {
+    color:#000080;
+    background-color: transparent;
+    text-decoration: none;
+	}
+	a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+	}
+	a:active {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: underline;
+	}
+	</style>
+	
+	<!--   import Google visualization  API -->
+
+	<script type="text/javascript"
+          src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['table']}]}"></script>
+    <script type="text/javascript" 
+	src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
+		  <script type="text/javascript"
+          src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['line']}]}"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	
+    <script type="text/javascript">
+	var queryUrl3="http://localhost:3030/project?query=SELECT%20distinct%20?year%20?accidents_all1%20?fatalities_total1%20?departures1%20?accidents_all2%20?fatalities_total2%20?departures2%20WHERE%20{%20GRAPH%20%3Chttp://localhost:3030/project/data/data70%3E{%20?s1%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/year%3E%20?year;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/accidents_all%3E%20?accidents_all1;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/departures%3E%20?departures1;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/fatalities_total%3E%20?fatalities_total1%20.%20}%20GRAPH%20%3Chttp://localhost:3030/project/data/data73%3E{%20?s2%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/year%3E%20?year;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/accidents_all%3E%20?accidents_all2;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/departures%3E%20?departures2%20;%20%3Chttp://data-gov.tw.rpi.edu/vocab/p/1566/fatalities_total%3E%20?fatalities_total2%20.%20}%20filter%20(?year%20%3E=%20%222000%22)%20}%20order%20by%20(?year)";
+	
+	
+	$.ajax({
+	 dataType: "jsonp",
+	 url:queryUrl3,	    
+	success: function(LineData1) {
+		drawSLineChart(LineData1);
+	}
+	});
+	  
+	  
+	function drawSLineChart(LineData1) {
+     	var linedata = new google.visualization.DataTable();
+		
+		var bardata = new google.visualization.DataTable();
+		
+      	linedata.addColumn('string', 'Year');
+		linedata.addColumn('number', 'Accident Rate per million departures for schedule part 121 operators');
+      	linedata.addColumn('number', 'Accident Rate per million departures for schedule part 135 operators');
+		bardata.addColumn('string', 'Year');
+		bardata.addColumn('number', 'Fatality Rate for schedule part 121 operators');
+		bardata.addColumn('number', 'Fatality Rate for schedule part 135 operators');
+		
+		var bindings = LineData1.results.bindings; 
+		
+		var AccidentRate1=0;
+		var FatalityRate1=0;
+		var AccidentRate2=0;
+		var FatalityRate2=0;
+		
+		for (var i in bindings) {
+			var accidentData = LineData1.results.bindings[i];
+			
+			var year = accidentData.year.value;
+			var Departure1 = parseInt(accidentData.departures1.value);
+			var Departure2 = parseInt(accidentData.departures2.value);
+			var accidents_all1 = parseInt(accidentData.accidents_all1.value);
+			var accidents_all2 = parseInt(accidentData.accidents_all2.value);
+			var fatalities_total1 = parseInt(accidentData.fatalities_total1.value);
+			var fatalities_total2 = parseInt(accidentData.fatalities_total2.value);
+			//console.log(major, damage, serious, injury);
+			AccidentRate1 =accidents_all1/Departure1*1000000;
+			AccidentRate2 =accidents_all2/Departure2*1000000;
+			FatalityRate1 =fatalities_total1/accidents_all1;
+			FatalityRate2 =fatalities_total2/accidents_all2;
+			//console.log(TotalMajor, TotalDamage, TotalSerious, TotalInjury);
+			var all = [year, AccidentRate1 , AccidentRate2 ]
+			var all1 = [year, FatalityRate1, FatalityRate2 ]
+			//alert(year+AccidentRate1+AccidentRate2+FatalityRate1+FatalityRate2 );
+			linedata.addRow(all);
+			bardata.addRow(all1);
+
+		}		
+		
+		var lineOptions = {
+		 chart: {
+          //title: 'Accidents rate per million departures for CFR121 and CFR135 from 2000-2009'
+		  }
+        };
+
+        var lineChart = new google.charts.Line(document.getElementById('line_chart'));
+        lineChart.draw(linedata, lineOptions);
+		
+		var barOptions = {
+            //title: 'Fatalities rate per accident for CFR121 and CFR135 from 2000-2009',
+            bars: 'vertical', // Required for Material Bar Charts. 
+        };
+		
+		var barChart = new google.visualization.BarChart(document.getElementById('bar_chart1'));
+        barChart.draw(bardata, barOptions);
+	}
+ 
+	</script>
+ </head>
+ <body>
+	<h1 style="text-align:center; background-color:white; color:red; padding:5px;">AVIATION ACCIDENT REPORT FROM 2000 - 2009</h1>
+	
+	<h3>Accidents per Million Departures for CFR121 and CFR135 operators</h3>
+
+	<h3><a href="#bar_chart1">Fatalities per Accidents for CFR121 and CFR135 operators</a></h3>
+	
+	<div id="line_chart" style="width: 900px; height: 450px;"></div>
+	<div id="bar_chart1" style="width: 900px; height: 600px"></div>
+	  
+	<a href="file:///C:/Users/Pragathi/OneDrive/Documents/SW/Proect/trial/AviationAccidents.html"> <b><center>HOME</center></b></a>
+ </body>
+</html>  

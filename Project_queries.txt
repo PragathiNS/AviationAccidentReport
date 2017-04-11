@@ -1,0 +1,75 @@
+Q1
+SELECT distinct ?year ?major ?serious ?damage ?injury 
+WHERE 
+{
+  GRAPH  <http://localhost:3030/project/data/data67>{
+    ?s1 <http://data-gov.tw.rpi.edu/vocab/p/1566/year> ?year;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/major> ?major;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/serious> ?serious;
+       <http://data-gov.tw.rpi.edu/vocab/p/1566/damage> ?damage;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/injury> ?injury.
+    FILTER (?year>'1999')
+    }
+}
+order by (?year)
+
+Q2
+SELECT distinct ?year ?major ?serious ?damage ?injury ?accidents_fatal ?hull_losses 
+WHERE 
+{
+  GRAPH  <http://localhost:3030/project/data/data67>{
+     ?s1 <http://data-gov.tw.rpi.edu/vocab/p/1566/year> ?year;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/major> ?major;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/serious> ?serious;
+       <http://data-gov.tw.rpi.edu/vocab/p/1566/damage> ?damage;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/injury> ?injury.
+    }
+  GRAPH  <http://localhost:3030/project/data/data69>{
+    ?s3 <http://data-gov.tw.rpi.edu/vocab/p/1566/year> ?year;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/hull_losses> ?hull_losses;
+    }
+GRAPH  <http://localhost:3030/project/data/data70>{
+    ?s4 <http://data-gov.tw.rpi.edu/vocab/p/1566/year> ?year;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/accidents_fatal> ?accidents_fatal;
+    }
+}
+order by desc (?year)
+limit 10
+
+Q3
+SELECT distinct ?year ?passenger_fatalities ?passenger_injuries ?fatalities_aboard ?fatalities_total  
+WHERE 
+{
+  GRAPH  <http://localhost:3030/project/data/data70>{
+    ?s1 <http://data-gov.tw.rpi.edu/vocab/p/1566/year> ?year;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/fatalities_aboard> ?fatalities_aboard;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/fatalities_total> ?fatalities_total 
+}
+  GRAPH  <http://localhost:3030/project/data/data68>{
+    ?s2 <http://data-gov.tw.rpi.edu/vocab/p/1566/year> ?year;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/passenger_fatalities> ?passenger_fatalities;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/passenger_serious_injuries> ?passenger_injuries ;
+    }
+}
+order by desc (?year)
+limit 10
+
+Q4
+SELECT distinct ?year ?accidents_all1 ?fatalities_total1 ?departures1 ?accidents_all2 ?fatalities_total2 ?departures2 
+WHERE 
+{
+  GRAPH  <http://localhost:3030/project/data/data70>{
+    ?s1 <http://data-gov.tw.rpi.edu/vocab/p/1566/year> ?year;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/accidents_all> ?accidents_all1;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/departures> ?departures1;
+       <http://data-gov.tw.rpi.edu/vocab/p/1566/fatalities_total> ?fatalities_total1 .
+    }
+  GRAPH  <http://localhost:3030/project/data/data73>{
+    ?s2 <http://data-gov.tw.rpi.edu/vocab/p/1566/year> ?year;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/accidents_all> ?accidents_all2;
+      <http://data-gov.tw.rpi.edu/vocab/p/1566/departures> ?departures2 ;
+       <http://data-gov.tw.rpi.edu/vocab/p/1566/fatalities_total> ?fatalities_total2 .
+    } 
+  filter (?year >= "2000")
+}
+order by (?year)
