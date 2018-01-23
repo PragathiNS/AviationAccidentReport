@@ -16,7 +16,7 @@ This is a LOGD (Linking Open Goverrnment Data) project. You can have access to o
 It is based on the idea of making statements about resources (in particular web resources) in expressions of the form **subject–predicate–object**, known as **triples**. The subject denotes the resource, and the predicate denotes traits or aspects of the resource, and expresses a relationship between the subject and the object.
 - **SPARQL** - SPARQL Protocol and RDF Query Language, a semantic query language for databases, able to retrieve and manipulate data stored in Resource Description Framework (RDF) format.
 - **Google Visualization API** - Refer the documentation [here](https://developers.google.com/chart/interactive/docs/reference)
-- **Fuseki server** - It is a SPARQL server. You can read about it [here](https://jena.apache.org/index.html)
+- **Fuseki server** - It is a SPARQL server. You can read about it [here](https://jena.apache.org/documentation/fuseki2/index.html)
 
 ### Description of Datasets
 1. **Dataset 1567**</br>
