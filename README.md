@@ -1,10 +1,10 @@
-# Analysis of the aviation accidents
+# ANALYSIS OF THE AVIATION ACCIDENTS
 
 This is a LOGD (Linking Open Goverrnment Data) project. You can have access to other LOGD projects by clicking on the image. <a rel="source" href="https://logd.tw.rpi.edu/">
 <img alt="TWC LOGD" style="border-width:0" src="https://logd.tw.rpi.edu/images/logo-twc-logd-rect.png" /> </a>
 </br>
 
-### SUMMARY
+### Summary
    This is a project for Semantic Web course during my Master of Science in University of Texs at Dallas.</br>
    This project details the aviation accidents occurring in commercial air carriers from 2000-2009.
    This report enables understanding of the rate of change of different accident severities, the passenger fatalities and type of 
@@ -13,12 +13,10 @@ This is a LOGD (Linking Open Goverrnment Data) project. You can have access to o
 
 ### Built With
 - **RDF** - Resource Description Framework. The RDF data model is similar to classical conceptual modeling approaches (such as entity–relationship or class diagrams).
-It is based on the idea of making statements about resources (in particular web resources) in expressions of the form **subject–predicate–object**, known as **triples**. 
-The subject denotes the resource, and the predicate denotes traits or aspects of the resource, and expresses a relationship between the subject and the object.
-- **SPARQL** - SPARQL Protocol and RDF Query Language, a semantic query language for databases, able to retrieve and manipulate data stored 
-in Resource Description Framework (RDF) format.
-- **Google Visualization API**
-- **Fuseki server**
+It is based on the idea of making statements about resources (in particular web resources) in expressions of the form **subject–predicate–object**, known as **triples**. The subject denotes the resource, and the predicate denotes traits or aspects of the resource, and expresses a relationship between the subject and the object.
+- **SPARQL** - SPARQL Protocol and RDF Query Language, a semantic query language for databases, able to retrieve and manipulate data stored in Resource Description Framework (RDF) format.
+- **Google Visualization API** - Refer the documentation [here](https://developers.google.com/chart/interactive/docs/reference)
+- **Fuseki server** - It is a SPARQL server. You can read about it [here](https://jena.apache.org/index.html)
 
 ### Description of Datasets
 1. **Dataset 1567**</br>
@@ -34,8 +32,7 @@ in Resource Description Framework (RDF) format.
    Operating under 14 CFR 121 and has 86 triples.
 
 4. **Dataset 1570**</br>
-   This dataset provides the data of the accidents, fatalities, and rates for the years 1999 - 2009, for U.S. Air Carriers Operating under 
-   14 CFR 121, Scheduled and Nonscheduled Service (Airlines) and has 186 triples.
+   This dataset provides the data of the accidents, fatalities, and rates for the years 1999 - 2009, for U.S. Air Carriers Operating        under 14 CFR 121, Scheduled and Nonscheduled Service (Airlines) and has 186 triples.
 
 5. **Dataset 1573**</br>
    This dataset provides the of the accidents, fatalities, and rates for the years 1999 - 2009, for U.S. Air Carriers Operating under 
