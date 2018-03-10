@@ -5,7 +5,7 @@ This is a LOGD (Linking Open Goverrnment Data) project. You can have access to o
 </br>
 
 ### Summary
-   This is a project for Semantic Web course during my Master of Science in University of Texs at Dallas.</br>
+   This is a project for Semantic Web course during my Master of Science in University of Texas at Dallas.</br>
    This project details the aviation accidents occurring in commercial air carriers from 2000-2009.
    This report enables understanding of the rate of change of different accident severities, the passenger fatalities and type of 
    fatalities occurring due to aircraft accidents. 
